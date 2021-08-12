@@ -6,32 +6,26 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, prop, mixins } from 'vue-class-component'
+import { defineComponent } from 'vue'
 
-class ColorSquareProps {
-  modelValue = prop<string>({
-    type: String,
-    default: '',
-    required: true,
-  })
-}
-
-const ColorSquarePropsMixin = Vue.with(ColorSquareProps)
-
-@Options({
+export default defineComponent({
   name: 'VaColorSquare',
+  props: {
+    modelValue: {
+      type: String,
+      require: true,
+    },
+  },
 })
-export default class VaColorSquare extends mixins(ColorSquarePropsMixin) {
-
-}
 </script>
 
 <style lang='scss'>
-@import "../../styles/resources/resources";
+// @import "../../../sass/main.scss";
 
 .va-color-square {
   height: 48px;
   width: 48px;
-  border: 1px solid $gray-light;
+  border: 1px solid gray;
+  // border: 1px solid var(-va-gray-light);
 }
 </style>

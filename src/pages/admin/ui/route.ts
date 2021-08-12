@@ -26,14 +26,14 @@ export default {
         wikiLink: 'https://github.com/epicmaxco/vuestic-admin/wiki/Rating',
       },
     },
-    {
-      name: 'color-pickers',
-      path: 'color-pickers',
-      component: () => import('@/pages/admin/ui/color-pickers/ColorPickers.vue'),
-      meta: {
-        wikiLink: 'https://github.com/epicmaxco/vuestic-admin/wiki/Color-Pickers',
-      },
-    },
+    // {
+    //   name: 'color-pickers',
+    //   path: 'color-pickers',
+    //   component: () => import('@/pages/admin/ui/color-pickers/ColorPickers.vue'),
+    //   meta: {
+    //     wikiLink: 'https://github.com/epicmaxco/vuestic-admin/wiki/Color-Pickers',
+    //   },
+    // },
     {
       name: 'timelines',
       path: 'timelines',

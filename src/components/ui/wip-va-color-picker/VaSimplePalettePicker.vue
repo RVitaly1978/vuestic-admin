@@ -13,47 +13,43 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, prop, mixins } from 'vue-class-component'
+import { defineComponent, computed, ref } from 'vue'
 import { ColorDot } from './index'
 
-class SimplePalettePickerProps {
-  modelValue = prop<string>({
-    type: String,
-    default: '',
-  })
-
-  palette = prop<Array<string>>({
-    type: Array,
-    default: () => [],
-  })
-}
-
-const SimplePalettePickerPropsMixin = Vue.with(SimplePalettePickerProps)
-
-@Options({
+export default defineComponent({
   name: 'VaSimplePalettePicker',
   components: {
     ColorDot,
   },
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
+    palette: {
+      type: Array,
+      default: () => [],
+    },
+  },
   emits: ['update:modelValue'],
+
+  setup(props, { emit }) {
+    const valueProxy = ref(props.modelValue)
+
+    const isSelected = computed((color: string): boolean => {
+      return valueProxy.value === color
+    })
+
+    const handlerClick = (color: string): void => {
+      emit('update:modelValue', color)
+    }
+
+    return {
+      isSelected,
+      handlerClick,
+    }
+  },
 })
-export default class VaSimplePalettePicker extends mixins(SimplePalettePickerPropsMixin) {
-  get valueProxy (): any {
-    return this.modelValue
-  }
-
-  set valueProxy (value: any) {
-    this.$emit('update:modelValue', value)
-  }
-
-  isSelected (color: any): boolean {
-    return this.modelValue === color
-  }
-
-  handlerClick (color: any): void {
-    this.valueProxy = color
-  }
-}
 </script>
 
 <style lang="scss">
@@ -65,5 +61,4 @@ export default class VaSimplePalettePicker extends mixins(SimplePalettePickerPro
     display: flex;
   }
 }
-
 </style>

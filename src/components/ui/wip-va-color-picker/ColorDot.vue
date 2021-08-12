@@ -12,33 +12,26 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, prop, mixins } from 'vue-class-component'
+import { defineComponent } from 'vue'
 
-class ColorDotProps {
-  color = prop<string>({
-    type: String,
-    default: '',
-  })
-
-  selected = prop<boolean>({
-    type: Boolean,
-    default: false,
-  })
-}
-
-const ColorDotPropsMixin = Vue.with(ColorDotProps)
-
-@Options({
+export default defineComponent({
   name: 'ColorDot',
   emits: ['click'],
+  props: {
+    color: {
+      type: String,
+      default: '',
+    },
+    selected: {
+      type: Boolean,
+      default: false,
+    },
+  },
 })
-export default class ColorDot extends mixins(ColorDotPropsMixin) {
-
-}
 </script>
 
 <style lang="scss">
-@import "../../styles/resources/resources";
+// @import "../../../sass/main.scss";
 
 .color-dot {
   display: flex;
@@ -53,7 +46,8 @@ export default class ColorDot extends mixins(ColorDotPropsMixin) {
   border: solid 0.125rem transparent;
 
   &--selected {
-    border-color: $vue-darkest-blue;
+    // border-color: var(--va-vue-darkest-blue);
+    border-color: darkblue;
   }
 
   &__core {

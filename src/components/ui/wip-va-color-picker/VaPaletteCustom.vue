@@ -19,50 +19,52 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, prop, mixins } from 'vue-class-component'
-
+import { computed, defineComponent, ref } from 'vue'
 import {
   VaColorPickerInput,
   VaSimplePalettePicker,
-  VaColorInput,
 } from './index'
 
-class PaletteCustomProps {
-  modelValue = prop<string>({
-    type: String,
-    default: '',
-  })
-
-  palette = prop<Array<string>>({
-    type: Array,
-    default: () => [],
-  })
-}
-
-const PaletteCustomPropsMixin = Vue.with(PaletteCustomProps)
-
-@Options({
+export default defineComponent({
   name: 'VaPaletteCustom',
   components: {
-    VaColorInput,
     VaColorPickerInput,
     VaSimplePalettePicker,
   },
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    },
+    palette: {
+      type: Array,
+      default: () => [],
+    },
+  },
   emits: ['update:modelValue'],
+
+  setup(props, { emit }) {
+    const value = ref(props.modelValue)
+
+    const valueProxy = computed({
+      get() {
+        return value.value
+      },
+      set(value: string) {
+        emit('update:modelValue', value)
+      },
+    })
+
+    const dotIsSelected = (): boolean => {
+      return props.palette.includes(valueProxy)
+    }
+
+    return {
+      valueProxy,
+      dotIsSelected,
+    } 
+  }
 })
-export default class VaPaletteCustom extends mixins(PaletteCustomPropsMixin) {
-  get valueProxy (): any {
-    return this.modelValue
-  }
-
-  set valueProxy (value: any) {
-    this.$emit('update:modelValue', value)
-  }
-
-  get dotIsSelected (): boolean {
-    return this.palette.includes(this.modelValue)
-  }
-}
 </script>
 
 <style lang="scss">

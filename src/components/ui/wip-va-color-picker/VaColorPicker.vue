@@ -6,32 +6,39 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, prop, mixins } from 'vue-class-component'
+import { computed, defineComponent, ref } from 'vue'
 import { Chrome } from 'vue-color'
 
-class ColorPickerProps {
-  value = prop<string>({
-    type: String,
-    default: '',
-  })
-}
-
-const ColorPickerPropsMixin = Vue.with(ColorPickerProps)
-
-@Options({
+export default defineComponent({
   name: 'VaColorPicker',
-  components: { ChromePicker: Chrome },
+  components: {
+    ChromePicker: Chrome,
+  },
+  props: {
+    value: {
+      type: String,
+      default: '',
+    }
+  },
   emits: ['input'],
-})
-export default class VaColorPicker extends mixins(ColorPickerPropsMixin) {
-  get valueProxy (): any {
-    return this.value
-  }
 
-  set valueProxy (value: any) {
-    this.$emit('input', value.hex)
-  }
-}
+  setup(props, { emit }) {
+    const value = ref(props.value)
+
+    const valueProxy = computed({
+      get() {
+        return value.value
+      },
+      set(value: string) {
+        emit('input', value)
+      },
+    })
+
+    return {
+      valueProxy,
+    }
+  },
+})
 </script>
 
 <style lang="scss">

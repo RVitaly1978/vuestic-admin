@@ -6,34 +6,39 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue, prop, mixins } from 'vue-class-component'
+import { computed, defineComponent, ref } from 'vue'
 import { Slider } from 'vue-color'
 
-class ColorSliderProps {
-  modelValue = prop<string>({
-    type: String,
-    default: '',
-  })
-}
-
-const ColorSliderPropsMixin = Vue.with(ColorSliderProps)
-
-@Options({
+export default defineComponent({
   name: 'VaColorSlider',
   components: {
     SliderPicker: Slider,
   },
+  props: {
+    modelValue: {
+      type: String,
+      default: '',
+    }
+  },
   emits: ['update:modelValue'],
-})
-export default class VaColorSlider extends mixins(ColorSliderPropsMixin) {
-  get valueProxy (): any {
-    return this.modelValue
-  }
 
-  set valueProxy (value: any) {
-    this.$emit('update:modelValue', value.hex)
-  }
-}
+  setup(props, { emit }) {
+    const value = ref(props.modelValue)
+
+    const valueProxy = computed({
+      get() {
+        return value.value
+      },
+      set(value: string) {
+        emit('update:modelValue', value)
+      },
+    })
+
+    return {
+      valueProxy,
+    }
+  },
+})
 </script>
 
 <style>

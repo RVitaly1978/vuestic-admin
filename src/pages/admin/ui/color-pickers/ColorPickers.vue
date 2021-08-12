@@ -101,9 +101,16 @@
 
 <script>
 import { useGlobalConfig } from 'vuestic-ui'
+import VaColorPicker, { VaColorSquare } from '../../../../components/ui/wip-va-color-picker'
+import VaColorSlider from '../../../../components/ui/wip-va-color-slider'
 
 export default {
   name: 'color-pickers',
+  components: {
+    VaColorSlider,
+    VaColorPicker,
+    VaColorSquare,
+  },
   data () {
     return {
       topSimpleSquareColor: '#f81953',
